@@ -1,7 +1,16 @@
 [package]
-name = "aether"
+name = "Aether"
+license = "GPL-3.0-or-later"
+authors = ["everyofflineuser <nealeks18@mail.ru>"]
+description = "Simple GTK4 Rust browser based on WebKit"
+homepage = "https://github.com/everyofflineuser/browser"
+keywords = ["browser", "rust", "webkit", "safari"]
+repository = "https://github.com/everyofflineuser/browser"
 version = "1.0.0"
 edition = "2021"
+
+[profile.release]
+lto = true
 
 [dependencies]
 gtk = { version = "0.9.6", package = "gtk4", features = ["v4_12"] }
@@ -9,3 +18,12 @@ adw = { version = "*", package = "libadwaita"}
 webkit6 = "0.4.0"
 percent-encoding = "2.3"
 url = "2.4"
+
+[package.metadata.generate-rpm]
+assets = [
+    { source = "target/release/Aether", dest = "/usr/bin/Aether", mode = "755" },
+    { source = "LICENSE", dest = "/usr/share/doc/aether/LICENSE", doc = true, mode = "0644" },
+    { source = "res/io.everyofflineuser.aether.desktop", dest = "/usr/share/applications/io.everyofflineuser.aether.desktop", mode = "644" },
+    { source = "res/icons/hicolor/scalable/apps/io.everyofflineuser.aether.svg", dest = "/usr/share/icons/hicolor/scalable/apps/io.everyofflineuser.aether.svg", mode = "644" },
+    { source = "res/icons/hicolor/symbolic/apps/io.everyofflineuser.aether.svg", dest = "/usr/share/icons/hicolor/scalable/apps/io.everyofflineuser.aether.svg", mode = "644" },
+]

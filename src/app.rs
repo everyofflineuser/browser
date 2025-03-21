@@ -3,8 +3,8 @@ use adw::{Application, ApplicationWindow, HeaderBar};
 use gtk::{Box, Orientation};
 use crate::controls::{self, create_webview_and_controls, Controls};
 
-pub const APP_ID: &str = "io.github.aether";
-pub const APP_TITLE: &str = "Aether (Browser)";
+pub const APP_ID: &str = "io.everyofflineuser.aether";
+pub const APP_TITLE: &str = "Aether";
 pub const APP_VERSION: &str = "1.0.0";
 pub const APP_WEBSITE: &str = "https://github.com/everyofflineuser/browser/";
 pub const DEFAULT_URL: &str = "https://www.google.com/";

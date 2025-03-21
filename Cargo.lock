@@ -3,7 +3,7 @@
 version = 4
 
 [[package]]
-name = "aether"
+name = "Aether"
 version = "1.0.0"
 dependencies = [
  "gtk4",

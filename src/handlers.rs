@@ -73,7 +73,7 @@ pub fn show_browser_info() {
         .authors(vec!["everyofflineuser (Main Developer)", "Time2138(Tester on MacOS)", "GitHub Contributors ❤️"])
         .license_type(gtk::License::Gpl30)
         .website(APP_WEBSITE)
-        .logo_icon_name("open-menu-symbolic")
+        .logo_icon_name("io.everyofflineuser.aether")
         .build();
 
     about.present();

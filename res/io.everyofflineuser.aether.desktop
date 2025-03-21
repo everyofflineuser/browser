@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Aether
+Comment=Rust GTK Browser
+Exec=/usr/bin/Aether %u
+Icon=io.everyofflineuser.aether
+Terminal=False
