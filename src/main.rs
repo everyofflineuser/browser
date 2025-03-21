@@ -1,20 +1,18 @@
-use gtk::{gdk::Display, prelude::*};
-use webkit2gtk::{WebView, WebViewExt};
+// Copyright 2020-2023 Tauri Programme within The Commons Conservancy
+// SPDX-License-Identifier: Apache-2.0
+// SPDX-License-Identifier: MIT
 
-fn main() {
-    gtk::init().expect("Failed to initialize GTK");
-    let display = Display::default().expect("Failed to get display");
-    println!("Using backend: {}", display.backend().is_x11());
+use tao::{
+    event::{Event, WindowEvent},
+    event_loop::{ControlFlow, EventLoop},
+    window::WindowBuilder,
+  };
+use wry::WebViewBuilder;
+  
+fn main() -> wry::Result<()> {
+    let event_loop = EventLoop::new();
+    let window = WindowBuilder::new().build(&event_loop).unwrap();
 
-    // Создание главного окна
-    let window = gtk::Window::new(gtk::WindowType::Toplevel);
-    window.set_title("WebKit2GTK Test Browser");
-    window.set_default_size(800, 600);
-
-    // Создание WebView
-    let web_view = WebView::new();
-
-    // Загрузка HTML-контента
     let html_content = r#"
     <!DOCTYPE html>
     <html>
@@ -55,20 +53,54 @@ fn main() {
     </html>
     "#;
 
+    let builder = WebViewBuilder::new()
+        //.with_url("http://tauri.app")
+        .with_html(html_content)
+        .with_drag_drop_handler(|e| {
+        match e {
+            wry::DragDropEvent::Enter { paths, position } => {
+            println!("DragEnter: {position:?} {paths:?} ")
+            }
+            wry::DragDropEvent::Over { position } => println!("DragOver: {position:?} "),
+            wry::DragDropEvent::Drop { paths, position } => {
+            println!("DragDrop: {position:?} {paths:?} ")
+            }
+            wry::DragDropEvent::Leave => println!("DragLeave"),
+            _ => {}
+        }
 
-    web_view.load_html(html_content, None);
+        true
+        });
 
-    // Добавление WebView в окно
-    window.add(&web_view);
+    #[cfg(any(
+        target_os = "windows",
+        target_os = "macos",
+        target_os = "ios",
+        target_os = "android"
+    ))]
+    let _webview = builder.build(&window)?;
+    #[cfg(not(any(
+        target_os = "windows",
+        target_os = "macos",
+        target_os = "ios",
+        target_os = "android"
+    )))]
+    let _webview = {
+        use tao::platform::unix::WindowExtUnix;
+        use wry::WebViewBuilderExtUnix;
+        let vbox = window.default_vbox().unwrap();
+        builder.build_gtk(vbox)?
+    };
 
-    // Обработка закрытия окна
-    window.connect_destroy(|_| {
-        gtk::main_quit();
+    event_loop.run(move |event, _, control_flow| {
+        *control_flow = ControlFlow::Wait;
+
+        if let Event::WindowEvent {
+        event: WindowEvent::CloseRequested,
+        ..
+        } = event
+        {
+        *control_flow = ControlFlow::Exit;
+        }
     });
-
-    // Показать все элементы
-    window.show_all();
-
-    // Запуск главного цикла GTK
-    gtk::main();
 }

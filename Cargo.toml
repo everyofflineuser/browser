@@ -4,9 +4,6 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-gtk = "0.18"
-webkit2gtk = "2.0.1"
-
-[target.x86_64-pc-windows-gnu]
-linker = "x86_64-w64-mingw32-gcc"
-ar = "x86_64-w64-mingw32-gcc-ar"
+gtk = { version = "0.9.6", package = "gtk4", features = ["v4_12"] }
+wry = "0.50.5"
+tao = "0.32"
